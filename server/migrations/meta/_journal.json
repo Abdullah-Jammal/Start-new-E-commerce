@@ -22,6 +22,55 @@
       "when": 1719072666650,
       "tag": "0002_furry_starfox",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1719213527639,
+      "tag": "0003_bright_salo",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1719248390473,
+      "tag": "0004_heavy_prowler",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1719248484081,
+      "tag": "0005_nasty_ma_gnuci",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1719249752552,
+      "tag": "0006_dashing_the_santerians",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1719250109886,
+      "tag": "0007_unknown_scrambler",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1719250368827,
+      "tag": "0008_silky_ronan",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1719252573552,
+      "tag": "0009_old_killraven",
+      "breakpoints": true
     }
   ]
 }

@@ -3,7 +3,6 @@ import React from "react"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   CardFooter
@@ -28,7 +27,6 @@ export const AuthCard = ({children, CardTitles, backButtoHref, backButtonLabel, 
           <CardTitle>
             {CardTitles}
           </CardTitle>
-          <CardDescription>Write Your Email and Password</CardDescription>
         </CardHeader>
         <CardContent>
           {children}
@@ -43,4 +41,3 @@ export const AuthCard = ({children, CardTitles, backButtoHref, backButtonLabel, 
     </div>
   )
 }
-

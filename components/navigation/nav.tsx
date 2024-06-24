@@ -8,7 +8,7 @@ import { LogIn } from 'lucide-react'
 export default async function Nav() {
   const session = await auth()
   return (
-    <header className="bg-blue-600 text-white py-4">
+    <header className='mt-4'>
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="logo">
