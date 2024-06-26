@@ -12,6 +12,8 @@ import { useAction } from 'next-safe-action/hooks'
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { RegisterSchema } from "@/types/register-schema";
+import { FormSuccess } from "./form-success";
+import { FormError } from "./form-error";
 
 export const RegisterForm = () => {
 
@@ -29,8 +31,11 @@ export const RegisterForm = () => {
 
   const {execute, status, result} = useAction(emailRegister, {
     onSuccess(data) {
+      if(data.data?.error) {
+        setError(data.data.error)
+      }
       if(data.data?.success) {
-        console.log(data.data?.success)
+        setSuccess(data.data.success)
       }
     }
   })
@@ -93,13 +98,12 @@ export const RegisterForm = () => {
               </FormItem>
             )}
           />
+          <FormSuccess message={success}/>
+          <FormError message={error}/>
           <div className="flex flex-col w-60">
             <Button className={cn('my-4 font-bold', status === 'executing' ? 'animate-pulse' : '')} type="submit">
               Register
             </Button>
-            {/* <Button variant={"link"}>
-              <Link href={'/auth/reset'}>Forget Password</Link>
-            </Button> */}
           </div>
         </form>
       </Form>

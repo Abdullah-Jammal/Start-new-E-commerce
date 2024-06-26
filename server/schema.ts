@@ -23,6 +23,7 @@ export const users = pgTable("user", {
   role : RoleEnum('role').default('user')
 })
 
+
 export const accounts = pgTable("account", {
     userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount["type"]>().notNull(),

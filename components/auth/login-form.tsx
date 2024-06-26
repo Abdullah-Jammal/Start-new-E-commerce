@@ -13,6 +13,8 @@ import { emailSignIn } from "@/server/actions/email-signin";
 import { useAction } from 'next-safe-action/hooks'
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { FormSuccess } from "./form-success";
+import { FormError } from "./form-error";
 
 export const LoginForm = () => {
 
@@ -27,9 +29,10 @@ export const LoginForm = () => {
     }
   })
 
-  const {execute, status, result} = useAction(emailSignIn, {
+  const {execute, status} = useAction(emailSignIn, {
     onSuccess(data) {
-      console.log(data)
+      if(data.data?.error) setError(data.data.error)
+      if(data.data?.success) return setSuccess(data.data.success)
     }
   })
 
@@ -74,6 +77,8 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
+          <FormSuccess message={success}/>
+          <FormError message={error}/>
           <div className="flex flex-col w-60">
             <Button className={cn('my-4 font-bold', status === 'executing' ? 'animate-pulse' : '')} type="submit">
               Login
