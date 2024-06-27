@@ -71,6 +71,13 @@
       "when": 1719252573552,
       "tag": "0009_old_killraven",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1719424505919,
+      "tag": "0010_familiar_skullbuster",
+      "breakpoints": true
     }
   ]
 }
