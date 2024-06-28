@@ -42,8 +42,8 @@ export const RegisterForm = () => {
 
   const onSubmit = (values : z.infer<typeof RegisterSchema>) => {
     execute(values)
-    console.log(values)
   }
+
   return (
     <AuthCard CardTitles="Register Now" showSocials backButtoHref="/auth/login" backButtonLabel="Already have an account">
       <Form {...form}>

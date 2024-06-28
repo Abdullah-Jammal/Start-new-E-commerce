@@ -1,4 +1,5 @@
 "use server"
+
 import { actionClient } from "@/lib/safe-action"
 import { NewPasswordSchema } from "@/types/new-password-schema"
 import { getPasswordResetTokenByToken } from "./tokens"
@@ -8,7 +9,6 @@ import bcrypt from 'bcrypt'
 import { passwordResetTokens, users } from "../schema"
 import { Pool } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-serverless"
-
 
 export const newPassword = actionClient.schema(NewPasswordSchema).action(async ({parsedInput: {password, token}}) => {
   const pool = new Pool({connectionString : process.env.POSTGRES_URL})
@@ -41,4 +41,3 @@ export const newPassword = actionClient.schema(NewPasswordSchema).action(async (
   })
   return {success : 'password update'}
 }) 
-

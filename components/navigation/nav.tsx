@@ -1,10 +1,9 @@
 import {auth} from '@/server/auth'
 import Logo from './logo'
 import UserButton from './user-button'
-import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { LogIn } from 'lucide-react'
-
+import Link from 'next/link'
 export default async function Nav() {
   const session = await auth()
   return (
@@ -12,7 +11,7 @@ export default async function Nav() {
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="logo">
-            <Logo/>
+            <Link href={'/'}><Logo/></Link>
           </div>
           <nav>
             <ul>
@@ -36,4 +35,3 @@ export default async function Nav() {
     </header>
   )
 }
-
