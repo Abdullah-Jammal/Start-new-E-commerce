@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { auth } from "@/server/auth"
 
 
 export default function UserButton({user} : Session) {
