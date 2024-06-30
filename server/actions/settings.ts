@@ -65,7 +65,6 @@ export const settings = actionClient.schema(SettingsSchema).action(async ({ pars
     })
     .where(eq(users.id, dbUser.id))
     
-  revalidatePath("/dashboard/settings")
-  
-  return { success: "Settings updated" }
+    revalidatePath("/dashboard/settings")
+    return { success: "Settings updated" }
 })

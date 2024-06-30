@@ -65,7 +65,6 @@ export default function SettingsCard(session : SettingsForm) {
   })
 
   function onSubmit(values: z.infer<typeof SettingsSchema>) {
-    console.log(values)
     execute(values)
   }
 
@@ -145,14 +144,18 @@ export default function SettingsCard(session : SettingsForm) {
                     <FormLabel>Two Factor Authentication</FormLabel>
                     <FormDescription>This is your public display name.</FormDescription>
                     <FormControl>
-                      <Switch className="scale-100" disabled={status === 'executing' || session.session.user.isOAuth === true}/>
+                      <Switch className="scale-100" 
+                      disabled = {status === 'executing' || session.session.user.isOAuth === true}
+                      checked={field.value} onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormError message={error}/>
-              <FormSuccess message={success}/>
+              {status === 'executing' ? <FormSuccess message={'Updating'}/> : 
+              <FormSuccess message={success}/>}
               <Button type="submit" disabled={status === 'executing' || avatarUploading}>Update Your Settings</Button>
             </form>
           </Form>
