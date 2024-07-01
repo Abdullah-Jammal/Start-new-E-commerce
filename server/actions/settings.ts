@@ -9,7 +9,6 @@ import { users } from "../schema"
 import bcrypt from "bcrypt"
 import { revalidatePath } from "next/cache"
 
-
 export const settings = actionClient.schema(SettingsSchema).action(async ({ parsedInput }) => {
   // Ensure parsedInput has the correct type
   const values: { 

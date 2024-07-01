@@ -70,7 +70,7 @@ export default function SettingsCard(session : SettingsForm) {
   }
 
   return (
-    <div className="container mx-auto mt-12">
+    <div className="container mx-auto mt-6 p-0">
       <Card>
         <CardHeader>
           <CardTitle>Your Settings</CardTitle>
