@@ -24,6 +24,10 @@ import Tiptap from './tiptap'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAction } from "next-safe-action/hooks"
 import { createProduct } from "@/server/actions/create-product"
+import { useRouter, useSearchParams } from "next/navigation"
+import {toast} from 'sonner'
+import { getProduct } from "@/server/actions/get-product"
+import { useEffect } from "react"
 
 export default function CreateProduct() {
   const form = useForm<z.infer<typeof ProductsSchema>>({
@@ -35,13 +39,54 @@ export default function CreateProduct() {
     },
     mode: 'onChange'
   })
+
+  const rout = useRouter()
+  const searchParams = useSearchParams()
+  const editMode = searchParams.get('id')
+
+  const checkProduct = async (id: number) => {
+    if(editMode) {
+      const data = await getProduct(id)
+      if(data.error) {
+        toast.error(data.error)
+        rout.push('/dashboard/products')
+        return
+      }
+      if(data.success) {
+        const id = parseInt(editMode)
+        form.setValue('title', data.success.title)
+        form.setValue('description', data.success.description)
+        form.setValue('price', data.success.price)
+        form.setValue('id', data.success.id)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(editMode) {
+      checkProduct(parseInt(editMode))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
   const {status, execute} = useAction(createProduct, {
     onSuccess: (data) => {
       if(data.data?.success) {
         console.log(data.data?.success)
+        rout.push('/dashboard/products')
+        toast.success('Creating the product')
       }
       if(data.data?.error) {
         console.log(data.data?.error)
+        toast.error('Faild to create product')
+      }
+    },
+    onExecute: () => {
+      if(!editMode) {
+        toast.loading('creating the prodcut')
+      }
+      if(editMode) {
+        toast.loading('Updating the product')
       }
     }
   })
@@ -52,7 +97,7 @@ export default function CreateProduct() {
   return (
     <Card className="mt-12">
       <CardHeader>
-        <CardTitle>Create Product</CardTitle>
+        <CardTitle>{editMode ? 'Edit Product' : 'Create Product'}</CardTitle>
       </CardHeader>
       <CardContent>
       <Form {...form}>
@@ -99,7 +144,9 @@ export default function CreateProduct() {
             </FormItem>
           )}
         />
-        <Button disabled={status === 'executing' || !form.formState.isDirty || !form.formState.isValid} type="submit">Create</Button>
+        <Button disabled={status === 'executing' || !form.formState.isDirty || !form.formState.isValid} type="submit">
+          {editMode ? 'Update Product' : 'Create Product'}
+        </Button>
       </form>
     </Form>
       </CardContent>
