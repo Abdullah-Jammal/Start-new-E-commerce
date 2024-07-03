@@ -11,6 +11,8 @@ import {
 } from "drizzle-orm/pg-core"
 import type { AdapterAccount } from "next-auth/adapters"
 import { createId } from '@paralleldrive/cuid2'
+import { timeStamp } from "console"
+import { relations } from "drizzle-orm"
 
 export const RoleEnum = pgEnum('role', ['user', 'admin'])
 
@@ -94,3 +96,59 @@ export const products = pgTable('products', {
   created: timestamp('created').defaultNow(),
   price: real('price').notNull()
 })
+
+
+export const productVariant = pgTable('productVariant', {
+  id: serial('id').primaryKey().notNull(),
+  color: text('color').notNull(),
+  productType: text('productType').notNull(),
+  updated: timestamp('updated').defaultNow(),
+  productID: serial('productID').notNull().references(() => products.id, {onDelete: 'cascade'})
+})
+
+
+export const variantImages = pgTable('variantImages', {
+  id: serial('id').primaryKey(),
+  url: text('url').notNull(),
+  size: real('size').notNull(),
+  name: text('name').notNull(),
+  order: real('order').notNull(),
+  variantID: serial('variantID').notNull().references(() => productVariant.id, {onDelete: 'cascade'})
+})
+
+export const variantTags = pgTable('variantTags', {
+  id: serial('id').primaryKey(),
+  tag: text('tag').notNull(),
+  variantID: serial('variantID').notNull().references(() => productVariant.id, {onDelete: 'cascade'})
+})
+
+export const productRelations = relations(products, ({many}) => ({
+  productVariant: many(productVariant, {relationName: 'productVariant'}),
+}))
+
+export const productVariantRelations = relations(productVariant, ({many, one}) => ({
+  product: one(products, {
+    fields: [productVariant.productID],
+    references: [products.id],
+    relationName: 'productVariants'
+  }),
+  variantImages: many(variantImages, {relationName: 'variantImages'}),
+  variantTags: many(variantTags, {relationName: 'variantTags'})
+}))
+
+export const variantImagesRelations = relations(variantImages, ({one}) => ({
+  productVariant: one(productVariant, {
+    fields: [variantImages.variantID],
+    references: [productVariant.id],
+    relationName: 'variantImages'
+  })
+}))
+
+export const variantTagsRelations = relations(variantTags, ({one}) => ({
+  productVariant: one(productVariant, {
+    fields: [variantTags.variantID],
+    references: [productVariant.id],
+    relationName: 'variantTags'
+  })
+}))
+

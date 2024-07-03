@@ -30,7 +30,7 @@ import {
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ChevronDownCircleIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
         </CardHeader>
         <CardContent>
           <div>
-            <div>
+            <div className="my-6">
               <Input placeholder="Filter Products" value={(table.getColumn('title')?.getFilterValue() as string ?? '')}
               onChange={(e) => table.getColumn('title')?.setFilterValue(e.target.value)}
               />
@@ -112,20 +112,19 @@ export function DataTable<TData, TValue>({
               )}
             </TableBody>
           </Table>
-          <div className="flex justify-end gap-12 items-center mt-6">
-            <Button variant={'outline'} onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-              <ChevronLeftIcon className="w-4 h-4"/>
-              <span>Previous</span>
-            </Button>
-            <Button variant={'outline'} onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-              <span>Next</span>
-              <ChevronRightIcon className="w-4 h-4"/>
-            </Button>
-          </div>
+            <div className="flex justify-end gap-12 items-center mt-6">
+              <Button variant={'outline'} onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+                <ChevronLeftIcon className="w-4 h-4"/>
+                <span>Previous</span>
+              </Button>
+              <Button variant={'outline'} onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+                <span>Next</span>
+                <ChevronRightIcon className="w-4 h-4"/>
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
-      
     </div>
   )
 }

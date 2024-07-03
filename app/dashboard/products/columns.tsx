@@ -15,13 +15,22 @@ import { deleteProduct } from "@/server/actions/delete-product"
 import { toast } from "sonner"
 import { useAction } from "next-safe-action/hooks"
 import Link from "next/link"
+import { VariantsWithImagesTags } from "@/lib/infer-type"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {ProductVariant} from "./product-variant"
+import { Plus } from 'lucide-react';
 
 
 type ProductColumn = {
   title: string,
   id: number,
   image: string,
-  variants: any,
+  variants: VariantsWithImagesTags[],
   price: number
 }
 
@@ -77,7 +86,45 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey : 'variants',
-    header : 'Variants'
+    header : 'Variants',
+    cell: ({row}) => {
+      const variant = row.getValue('variants') as VariantsWithImagesTags[]
+      return (
+        <div>
+          {variant.map((variant) => (
+            <div key={variant.id}>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <ProductVariant variant={variant} productID={variant.productID} editMode={true}>
+                      <div className="w-5 h-5 rounded-full" key={variant.id} 
+                      style={{backgroundColor: variant.color}}/>
+                    </ProductVariant>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{variant.productType}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          ))}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span>
+                  <ProductVariant editMode={false} >
+                      <Plus className='dark:bg-primary/50 bg-secondary rounded-full p-1'/>
+                  </ProductVariant>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>create new variant</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+        </div>
+      )
+    }
   },
   {
     accessorKey : 'price',
