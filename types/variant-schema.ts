@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const VariantSchema = z.object({
   productID: z.number(),
-  id: z.number(),
+  id: z.number().optional(),
   editMode: z.boolean(),
   productType: z.string().min(3, {message: 'Product type must be at least 3 charactors'}),
   color: z.string().min(3, {message: 'Color must be at least 3 char'}),
@@ -17,4 +17,5 @@ export const VariantSchema = z.object({
     id: z.number(),
     name: z.string()
   }))
+  .min(1, {message : 'You must provide at least one image'})
 })

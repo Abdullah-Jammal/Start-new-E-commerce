@@ -26,6 +26,11 @@ import {
 import { Input } from "@/components/ui/input"
 import {InputTags} from "./input-tags"
 import VariantImages from "./variant-images"
+import { useAction } from "next-safe-action/hooks"
+import { createVariant } from "@/server/actions/create-variant"
+import { toast } from "sonner"
+import { useEffect, useState } from "react"
+import { deleteVariant } from "@/server/actions/delete-variant"
 
 
 export const ProductVariant = ({editMode, productID, variant, children} : {
@@ -43,12 +48,69 @@ export const ProductVariant = ({editMode, productID, variant, children} : {
       },
     })
 
+    const [open, setOpen] = useState(false)
+
+    const setEdit = () => {
+      if(!editMode) {
+        form.reset()
+        return
+      }
+      if(editMode && variant) {
+        form.setValue('editMode', true)
+        form.setValue('id', variant.id)
+        form.setValue('productID', variant.productID)
+        form.setValue('productType', variant.productType)
+        form.setValue('color', variant.color)
+        form.setValue('tags', variant.variantTags.map(tag => tag.tag))
+        form.setValue('variantImages', variant.variantImages.map((img) => ({
+          name: img.name,
+          size: img.size,
+          url: img.url,
+          id: 0
+        })))
+      }
+    }
+
+    useEffect(() => {
+      setEdit()
+    }, [])
+
+    const {execute, status} = useAction(createVariant,{
+      onExecute() {
+        toast.loading('creating variant', {duration : 500})
+        setOpen(false)
+      },
+      onSuccess(data) {
+        if(data.data?.success) {
+          toast.success('Variant Created')
+        }
+        if(data.data?.error) {
+          toast.error('Failed create variant')
+        }
+      }
+    })
+
+    const variantAction = useAction(deleteVariant, {
+      onExecute() {
+        toast.loading('Deleting variant', {duration : 500})
+        setOpen(false)
+      },
+      onSuccess(data) {
+        if(data.data?.error) {
+          toast.error(data.data.error)
+        }
+        if(data.data?.success) {
+          toast.success(data.data?.success, {duration : 500})
+        }
+      }
+    })
+
     function onSubmit(values: z.infer<typeof VariantSchema>) {
-      console.log(values)
+      execute(values)
     }
 
   return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-[860px]">
           <DialogHeader>
@@ -101,10 +163,15 @@ export const ProductVariant = ({editMode, productID, variant, children} : {
           )}
         />
         <VariantImages/>
-        {editMode && variant && (
-          <Button className="" type="button" onClick={(e) => e.preventDefault()}>Delete variant</Button>
-        )}
-        <Button type="submit">{editMode ? 'Update variant' : 'Create variant'}</Button>
+        <div className="gap-4 flex">
+          {editMode && variant && (
+            <Button variant={'destructive'} disabled={variantAction.status === 'executing'} className="" type="button" onClick={(e) => {
+              e.preventDefault()
+              variantAction.execute({id : variant.id})
+            }}>Delete variant</Button>
+          )}
+          <Button disabled={status === 'executing' || !form.formState.isValid || !form.formState.isDirty} type="submit">{editMode ? 'Update variant' : 'Create variant'}</Button>
+        </div>
       </form>
     </Form>
         </DialogContent>

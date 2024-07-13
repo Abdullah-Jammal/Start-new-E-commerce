@@ -31,15 +31,15 @@ export type VariantsWithImagesTags = InferResultType<
   { variantImages: true; variantTags: true }
 >
 
-// export type ProductsWithVariants = InferResultType<
-//   "products",
-//   { productVariant: true }
-// >
+export type ProductsWithVariants = InferResultType<
+  "products",
+  { productVariants: true }
+>
 
-// export type VariantsWithProduct = InferResultType<
-//   "productVariant",
-//   { variantImages: true; variantTags: true; product: true }
-// >
+export type VariantsWithProduct = InferResultType<
+  "productVariant",
+  { variantImages: true; variantTags: true; product: true }
+>
 
 // export type ReviewsWithUser = InferResultType<
 //   "reviews",

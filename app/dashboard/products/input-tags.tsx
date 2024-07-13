@@ -65,5 +65,4 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(({onChange
   )
 })
 
-
 InputTags.displayName = "InputTags"
