@@ -7,6 +7,9 @@ import formatPrice from "@/lib/format-price"
 import ProductPick from "@/components/products/product-pick"
 import ProductShowCase from "@/components/products/product-show-case"
 import Reviews from "@/components/reviews/reviews"
+import { getReviewAverage } from "@/lib/review-average"
+import Stars from "@/components/reviews/starts"
+import AddCart from "@/components/cart/add-cart"
 
 
 export async function generateStaticParams() {
@@ -31,6 +34,7 @@ export default async function page({params} : { params : {slug: string}}) {
     where : eq(productVariant.id, Number(params.slug)),
     with : {product : {
       with : {
+        reviews : true,
         productVariants : {
           with : {variantImages : true, variantTags: true}
         }
@@ -38,6 +42,7 @@ export default async function page({params} : { params : {slug: string}}) {
     }}
   })
   if(variant) {
+    const reviewAvg = getReviewAverage(variant?.product.reviews.map((r) => r.rating))
     return (
       <main className="container mx-auto">
         <section className="flex flex-col lg:flex-row gap-4 lg:gap-12 mt-12">
@@ -48,6 +53,7 @@ export default async function page({params} : { params : {slug: string}}) {
             <h2 className="font-medium text-2xl">{variant?.product.title}</h2>
             <div>
               <ProductType variants={variant.product.productVariants}/>
+              <Stars rating={reviewAvg} totalReviews={variant.product.reviews.length}/>
             </div>
             <Separator className="my-2"/>
             <p className="font-medium py-2">{formatPrice(variant.product.price)}</p>
@@ -61,6 +67,7 @@ export default async function page({params} : { params : {slug: string}}) {
                 />
               ))}
             </div>
+            <AddCart/>
           </div>
         </section>
         <Reviews productID={variant.productID}/>

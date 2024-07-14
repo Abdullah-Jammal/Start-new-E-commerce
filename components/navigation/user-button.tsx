@@ -39,13 +39,13 @@ export default function UserButton({user} : Session) {
   return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
-          <Avatar>
+          <Avatar className="w-7 h-7">
             {user.image && (
                 <Image src={user.image} alt={user.name!} priority={true} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"/>
             )}
             {!user.image && (
               <AvatarFallback className="bg-primary flex justify-center items-center w-full text-white">
-                <div className="font-bold">
+                <div className="font-bold text-sm">
                   {user.name?.charAt(0).toUpperCase()}
                 </div>
               </AvatarFallback>
