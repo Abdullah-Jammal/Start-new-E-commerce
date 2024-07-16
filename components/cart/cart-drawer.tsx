@@ -15,6 +15,7 @@ import {
 import {motion, AnimatePresence} from 'framer-motion'
 import CartItem from "./cart-item";
 import CartMessage from "./cart-message";
+import Payment from "./payment";
 
 
 export default function CartDrawer() {
@@ -41,6 +42,7 @@ export default function CartDrawer() {
           <CartMessage/>
         </DrawerHeader>
         {checkoutProgress === 'cart-page' && <CartItem/>}
+        {checkoutProgress === 'payment-page' && <Payment/>}
       </DrawerContent>
     </Drawer>
   )

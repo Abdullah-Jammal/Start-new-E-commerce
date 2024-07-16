@@ -12,7 +12,6 @@ import {
 } from "drizzle-orm/pg-core"
 import type { AdapterAccount } from "next-auth/adapters"
 import { createId } from '@paralleldrive/cuid2'
-import { timeStamp } from "console"
 import { relations } from "drizzle-orm"
 
 export const RoleEnum = pgEnum('role', ['user', 'admin'])
@@ -25,7 +24,8 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   twoFactorEnabled: boolean('twoFactorEnable').default(false),
-  role : RoleEnum('role').default('user')
+  role : RoleEnum('role').default('user'),
+  customerID: text('customerID')
 })
 
 export const accounts = pgTable("account", {
@@ -222,6 +222,24 @@ export const orderProduct = pgTable('orderProduct', {
   quantity : integer('quantity').notNull(),
   productVariantID: serial('productVariantID').notNull()
   .references(() => productVariant.id, {onDelete: 'cascade'}),
-  productID: serial('productID').notNull().references(() => products.id, {onDelete : 'cascade'})
+  productID: serial('productID').notNull().references(() => products.id, {onDelete : 'cascade'}),
+  orderID : serial('orderID').notNull().references(() => orders.id, {onDelete : 'cascade'})
 })
 
+export const orderProductRelations = relations(orderProduct, ({one}) => ({
+  order: one(orders, {
+    fields: [orderProduct.orderID],
+    references: [orders.id],
+    relationName: 'orderProduct'
+  }),
+  product: one(products, {
+    fields: [orderProduct.productID],
+    references: [products.id],
+    relationName: 'products'
+  }),
+  productVariants: one(productVariant, {
+    fields: [orderProduct.productVariantID],
+    references: [productVariant.id],
+    relationName: 'productVariants'
+  })
+}))

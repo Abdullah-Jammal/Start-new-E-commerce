@@ -120,6 +120,20 @@
       "when": 1720983373970,
       "tag": "0016_absurd_lizard",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1721039347891,
+      "tag": "0017_real_maverick",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1721039529507,
+      "tag": "0018_quiet_shinko_yamashiro",
+      "breakpoints": true
     }
   ]
 }
